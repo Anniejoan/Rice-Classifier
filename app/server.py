@@ -17,7 +17,7 @@ path = Path(__file__).parent
 
 app = Starlette()
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_headers=['X-Requested-With', 'Content-Type'])
-app.mount('/static', StaticFiles(directory='app/static'))
+app.mount('/static', StaticFiles(directory='static'))
 
 
 async def download_file(url, dest):
@@ -28,9 +28,8 @@ async def download_file(url, dest):
             with open(dest, 'wb') as f:
                 f.write(data)
 
-
 async def setup_learner():
-    await download_file(export_file_url, path / export_file_name)
+    await download_file(export_file_url, path/export_file_name)
     try:
         learn = load_learner(path, export_file_name)
         return learn
@@ -65,5 +64,6 @@ async def analyze(request):
 
 
 if __name__ == '__main__':
-    if 'serve' in sys.argv:
-        uvicorn.run(app=app, host='0.0.0.0', port=5000, log_level="info")
+    # if 'serve' in sys.argv:
+    uvicorn.run(app=app, host='0.0.0.0', port=5040, log_level="info")
+
